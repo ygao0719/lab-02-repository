@@ -1,7 +1,7 @@
 let dataUrl;
 
-if (window.location.href === 'https://ygao0719.github.io'){
-  dataUrl = window.location.href + '/lab-02-repository/data/page-1.json';
+if (window.location.href === 'https://ygao0719.github.io/lab-02-repository'){
+  dataUrl = window.location.href + '/data/page-1.json';
 } else {
   dataUrl = '/data/page-1.json';
 }
