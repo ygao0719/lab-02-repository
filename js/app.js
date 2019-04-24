@@ -1,3 +1,11 @@
+let dataUrl;
+
+if (window.location.href === 'https://ygao0719.github.io/lab-02-repository/'){
+  dataUrl = window.location.href + 'data/page-1.json';
+} else {
+  dataUrl = './data/page-1.json';
+}
+
 // alert('hello world');
 let images = [];
 let keywords = [];
@@ -12,7 +20,7 @@ let Image = function(url, title, description, keyword, horns){
 };
 
 
-$.get('/data/page-1.json', data => {
+$.get(dataUrl, data => {
   console.log(data);
   data.forEach(img => {
     let image = new Image();
@@ -55,3 +63,4 @@ const getImagesByKeyword = keyword => {
     }
   });
 };
+
