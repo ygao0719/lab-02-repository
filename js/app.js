@@ -22,6 +22,7 @@ $.get('/data/page-1.json', data => {
     image.keyword = img.keyword;
     image.horns = img.horns;
     $('#photo-template').append(`<img src=${image.url} alt=${image.description} title=${image.title} class=${image.keyword}>`);
+
     if (!keywords.includes(image.keyword)){
       $('select').append(`<option value=${image.keyword}> ${image.keyword} </option>`);
       keywords.push(image.keyword);
@@ -50,6 +51,7 @@ const getImagesByKeyword = keyword => {
       $(`.${image.keyword}`).hide();
     } else {
       $(`.${keyword}`).show();
+      $('h2').text(keyword.toUpperCase());
     }
   });
 };
