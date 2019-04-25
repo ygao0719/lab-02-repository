@@ -1,13 +1,7 @@
-let dataUrl;
-
-if (window.location.href === 'https://ygao0719.github.io/lab-02-repository/'){
-  dataUrl = window.location.href + 'data/page-1.json';
-} else {
-  dataUrl = './data/page-1.json';
-}
 
 // alert('hello world');
-let images = [];
+let images1 = [];
+let images2 = [];
 let keywords = [];
 
 let Image = function(url, title, description, keyword, horns){
@@ -16,33 +10,52 @@ let Image = function(url, title, description, keyword, horns){
   this.description = description;
   this.keyword = keyword;
   this.horns = horns;
-  images.push(this);
 };
 
+let getData = (dataUrl) =>{
+  console.log('here');
+  $.get(dataUrl, data => {
+    console.log(data);
+    $('#photo-template').empty();
+    data.forEach(img => {
+      let image = new Image();
+      image.url = img.image_url;
+      image.title = img.title;
+      image.description = img.description;
+      image.keyword = img.keyword;
+      image.horns = img.horns;
+      if(dataUrl === 'data/page-1.json'){
+        images1.push(image);
+      }else{
+        images2.push(image);
+      }
 
-$.get(dataUrl, data => {
-  console.log(data);
-  data.forEach(img => {
-    let image = new Image();
-    image.url = img.image_url;
-    image.title = img.title;
-    image.description = img.description;
-    image.keyword = img.keyword;
-    image.horns = img.horns;
-    $('#photo-template').append(`<img src=${image.url} alt=${image.description} title=${image.title} class=${image.keyword}>`);
-
-    if (!keywords.includes(image.keyword)){
-      $('select').append(`<option value=${image.keyword}> ${image.keyword} </option>`);
-      keywords.push(image.keyword);
-    }
+      $('#photo-template').append(`<img src=${image.url} alt=${image.description} title=${image.title} class=${image.keyword}>`);
+  
+      if (!keywords.includes(image.keyword)){
+        $('select').append(`<option value=${image.keyword}> ${image.keyword} </option>`);
+        keywords.push(image.keyword);
+      }
+    });
   });
+  
+};
+
+$('#button1').on('click', event =>{
+  event.preventDefault();
+  getData('data/page-1.json');
 });
+
+$('#button2').on('click', event =>{
+  event.preventDefault();
+  getData('data/page-2.json');
+});
+
+
 
 $('select').on('change', (event) => {
   event.preventDefault();
   let options = event.target;
-  // traverse keys;
-  // if options[key].selected === true
   Object.keys(options).forEach( (index) => {
     if(options[index].selected){
       let keyword = options[index].value;
@@ -54,13 +67,16 @@ $('select').on('change', (event) => {
 
 
 const getImagesByKeyword = keyword => {
-  images.forEach(image => {
-    if(image.keyword !== keyword) {
-      $(`.${image.keyword}`).hide();
-    } else {
-      $(`.${keyword}`).show();
-      $('h2').text(keyword.toUpperCase());
+  let images = $('img');
+  console.log();
+  Object.keys(images).forEach(index => {
+    let className = images[index].className;
+    if (className !== keyword){
+      $(`.${className}`).hide();
     }
   });
+  $(`.${keyword}`).show();
+  $('h2').text(keyword.toUpperCase());
 };
 
+getData('data/page-1.json');
