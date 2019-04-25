@@ -1,7 +1,6 @@
 
 // alert('hello world');
-let images1 = [];
-let images2 = [];
+let images = [];
 let keywords;
 let section = $('section');
 
@@ -23,6 +22,7 @@ let Image = function(url, title, description, keyword, horns){
 let getData = (dataUrl) => {
   $.get(dataUrl, data => {
     keywords = [];
+    images = [];
     console.log(data);
     let select = $('select');
     section.empty();
@@ -36,11 +36,8 @@ let getData = (dataUrl) => {
       image.description = img.description;
       image.keyword = img.keyword;
       image.horns = img.horns;
-      if(dataUrl === 'data/page-1.json'){
-        images1.push(image);
-      }else{
-        images2.push(image);
-      }
+
+      images.push(image);
 
       section.append(imageContainerRenderer(image));
 
@@ -51,7 +48,6 @@ let getData = (dataUrl) => {
       }
     });
   });
-  
 };
 
 $('#button1').on('click', event =>{
@@ -81,7 +77,8 @@ $('select').on('change', (event) => {
 const getImagesByKeyword = keyword => {
   let images = $('img');
   $('h2').empty();
-  section.append(h2Renderer({keyword: keyword}));
+  
+  section.prepend(h2Renderer({keyword: keyword}));
   Object.keys(images).forEach(index => {
     let className = images[index].className;
     if (className !== keyword){
@@ -92,3 +89,31 @@ const getImagesByKeyword = keyword => {
 };
 
 getData('data/page-1.json');
+
+//event for sort
+$('input').on('change', event =>{
+  // alert('hello');
+  event.preventDefault();
+  let selection = event.target.value;
+  console.log(selection);
+  sortBySelection(selection);
+});
+
+const sortBySelection = (selection => {
+  section.empty();
+  images.sort((a,b) =>{
+    if (a[selection] < b[selection]){
+      return -1;
+    }else if (a[selection] === b[selection]){
+      return 0;
+    }else{
+      return 1;
+    }
+  });
+  console.table(images);
+  images.forEach(img =>{
+    section.append(imageContainerRenderer(img));
+  });
+
+});
+
