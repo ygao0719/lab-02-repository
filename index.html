@@ -16,14 +16,28 @@
     <header>
       <h1>The Gallery of Horns</h1>
       <select>
-        <option value="default">Filter by Keyword</option>
       </select>
+      <script type="text/x-handlebars-template" id="option-template">
+        <option class="rendered-option" value={{keyword}}> {{keyword}} </option>
+      </script>
+      <script type="text/x-handlebars-template" id="first-option-template">
+        <option class="rendered-option" value="default"> Filter by Keyword  </option>
+      </script>
     </header>
     <main>
       <section id="photo-template">
-        <h2></h2>
-        <!-- <img src="" alt=""> -->
-        <!-- <p></p> -->
+        <!-- h2 handlebars template -->
+        <script type="text/x-handlebars-template" id="h2-template">
+          <h2>{{keyword}}</h2> 
+        </script>
+        
+        <!-- image rendered template -->
+        <script type="text/x-handlebars-template" id="image-container-template">
+          <div class={{keyword}}>
+            <img src={{url}} alt={{description}} title={{title}} class={{keyword}}>
+            <p>{{description}}</p>
+          </div>
+        </script>
       </section>
       <div>
         <button id="button1">Page 1</button>

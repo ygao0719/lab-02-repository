@@ -2,7 +2,15 @@
 // alert('hello world');
 let images1 = [];
 let images2 = [];
-let keywords = [];
+let keywords;
+let section = $('section');
+
+
+//Handlebars
+const optionRenderer = Handlebars.compile($('#option-template').text());
+const firstOptionRenderer = Handlebars.compile($('#first-option-template').text());
+const h2Renderer = Handlebars.compile($('#h2-template').text());
+const imageContainerRenderer = Handlebars.compile($('#image-container-template').text());
 
 let Image = function(url, title, description, keyword, horns){
   this.url = url;
@@ -12,11 +20,15 @@ let Image = function(url, title, description, keyword, horns){
   this.horns = horns;
 };
 
-let getData = (dataUrl) =>{
-  console.log('here');
+let getData = (dataUrl) => {
   $.get(dataUrl, data => {
+    keywords = [];
     console.log(data);
-    $('#photo-template').empty();
+    let select = $('select');
+    section.empty();
+    select.empty();
+    select.append(firstOptionRenderer());
+  
     data.forEach(img => {
       let image = new Image();
       image.url = img.image_url;
@@ -30,10 +42,11 @@ let getData = (dataUrl) =>{
         images2.push(image);
       }
 
-      $('#photo-template').append(`<img src=${image.url} alt=${image.description} title=${image.title} class=${image.keyword}>`);
-  
+      section.append(imageContainerRenderer(image));
+
       if (!keywords.includes(image.keyword)){
-        $('select').append(`<option value=${image.keyword}> ${image.keyword} </option>`);
+        //use handlebar template to append filter options on DOM
+        select.append(optionRenderer(image));
         keywords.push(image.keyword);
       }
     });
@@ -65,10 +78,10 @@ $('select').on('change', (event) => {
 
 });
 
-
 const getImagesByKeyword = keyword => {
   let images = $('img');
-  console.log();
+  $('h2').empty();
+  section.append(h2Renderer({keyword: keyword}));
   Object.keys(images).forEach(index => {
     let className = images[index].className;
     if (className !== keyword){
@@ -76,7 +89,6 @@ const getImagesByKeyword = keyword => {
     }
   });
   $(`.${keyword}`).show();
-  $('h2').text(keyword.toUpperCase());
 };
 
 getData('data/page-1.json');
