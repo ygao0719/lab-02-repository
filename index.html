@@ -17,24 +17,33 @@
       <h1>The Gallery of Horns</h1>
       <select>
       </select>
+
       <script type="text/x-handlebars-template" id="option-template">
         <option class="rendered-option" value={{keyword}}> {{keyword}} </option>
       </script>
       <script type="text/x-handlebars-template" id="first-option-template">
         <option class="rendered-option" value="default"> Filter by Keyword  </option>
       </script>
+
+      <input type="radio" name="sort" value="title" checked >Select by title
+      <input type="radio" name="sort" value="horns">Select by number of horns
+
     </header>
     <main>
       <section id="photo-template">
         <!-- h2 handlebars template -->
         <script type="text/x-handlebars-template" id="h2-template">
-          <h2>{{keyword}}</h2> 
+          <div id="filter-head">
+              <h2>{{keyword}}</h2> 
+          </div>  
         </script>
+
         
         <!-- image rendered template -->
         <script type="text/x-handlebars-template" id="image-container-template">
-          <div class={{keyword}}>
-            <img src={{url}} alt={{description}} title={{title}} class={{keyword}}>
+          <div class="{{keyword}} {{horns}}" id={{title}}>
+            <img src={{url}} alt={{description}} title={{title}} class={{keyword}} >
+            <p><em>{{title}}</em></p>
             <p>{{description}}</p>
           </div>
         </script>
